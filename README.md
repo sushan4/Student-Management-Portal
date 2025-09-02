@@ -35,7 +35,7 @@ A comprehensive web application for managing student records built with React.js
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd Siemens-assignment
+   cd Student-Management-Portal
    ```
 
 2. **Backend Setup**
