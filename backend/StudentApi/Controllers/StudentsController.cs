@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using StudentApi.Models;
 using StudentApi.Repositories;
 
@@ -6,6 +7,7 @@ namespace StudentApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize] // Require authentication for all endpoints
     public class StudentsController : ControllerBase
     {
         private readonly IStudentRepository _studentRepository;

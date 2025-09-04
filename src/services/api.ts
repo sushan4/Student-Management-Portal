@@ -19,6 +19,18 @@ export interface Student {
   isActive: boolean;
 }
 
+// Auth interfaces
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  token: string;
+  username: string;
+  expiresAt: string;
+}
+
 // API Error class
 export class ApiError extends Error {
   status: number;
@@ -30,23 +42,63 @@ export class ApiError extends Error {
   }
 }
 
-// API request function
+// Token management
+export const TokenManager = {
+  getToken: (): string | null => {
+    return localStorage.getItem('authToken');
+  },
+  
+  setToken: (token: string): void => {
+    localStorage.setItem('authToken', token);
+  },
+  
+  removeToken: (): void => {
+    localStorage.removeItem('authToken');
+  },
+  
+  isAuthenticated: (): boolean => {
+    const token = TokenManager.getToken();
+    if (!token) return false;
+    
+    try {
+      // Check if token is expired (basic check)
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const currentTime = Date.now() / 1000;
+      return payload.exp > currentTime;
+    } catch {
+      return false;
+    }
+  }
+};
+
+// Generic API request function
 async function apiRequest<T>(
   endpoint: string,
   options: RequestInit = {}
 ): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
   
-  const defaultHeaders = {
+  const token = TokenManager.getToken();
+  const defaultHeaders: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...options.headers,
+    ...(token && { 'Authorization': `Bearer ${token}` }),
   };
+
+  if (options.headers) {
+    Object.assign(defaultHeaders, options.headers);
+  }
 
   try {
     const response = await fetch(url, {
       ...options,
       headers: defaultHeaders,
     });
+
+    if (response.status === 401) {
+      // Token expired or invalid, remove it
+      TokenManager.removeToken();
+      throw new ApiError(401, 'Authentication required');
+    }
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -99,6 +151,29 @@ export const studentAPI = {
   delete: (id: number): Promise<void> => {
     return apiRequest<void>(`/students/${id}`, {
       method: 'DELETE',
+    });
+  },
+};
+
+// Authentication API
+export const authAPI = {
+  login: (credentials: LoginRequest): Promise<LoginResponse> => {
+    return apiRequest<LoginResponse>('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(credentials),
+    });
+  },
+
+  logout: (): Promise<void> => {
+    return apiRequest<void>('/auth/logout', {
+      method: 'POST',
+    });
+  },
+
+  validateToken: (token: string): Promise<{ valid: boolean; username?: string }> => {
+    return apiRequest<{ valid: boolean; username?: string }>('/auth/validate', {
+      method: 'POST',
+      body: JSON.stringify({ token }),
     });
   },
 };

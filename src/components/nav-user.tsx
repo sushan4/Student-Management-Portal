@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/sidebar"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
-import { Button } from "./ui/button"
+import { useAuth } from "@/hooks/use-auth"
 
 export function NavUser({
   user,
@@ -41,13 +41,12 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
-  const navigate = useNavigate();
 
-  const handleLogout = ():void=>{
-    navigate('/')
-    toast.success('Logged Out Successfully')
+  const { logout } = useAuth();
 
-  }
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <SidebarMenu>

@@ -35,9 +35,14 @@ export default function LoginPage() {
             <LoginForm />
           </div>
         </div>
-        <div  className="flex items-center justify-center">
-            Demo Credentials - Email - admin@gmail.com, Password - admin02
+        <div className="flex items-center justify-center text-center text-sm text-muted-foreground w-full">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <p className="font-medium text-blue-900 mb-1">Demo Credentials - 
+           Username: <span className="font-mono font-semibold">admin  ,</span>
+                       <span className="font-medium text-blue-900 mb-1">Password: </span>
+               <span className="font-mono font-semibold">admin02</span></p>
           </div>
+        </div>
       </motion.div>
 
       <motion.div 

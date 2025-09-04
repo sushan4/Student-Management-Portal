@@ -9,11 +9,18 @@ namespace StudentApi.Services
     public class DatabaseService
     {
         private readonly string _connectionString;
+        private readonly string _masterConnectionString;
 
         public DatabaseService(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection") //GEt from app settings.json
+            _connectionString = configuration.GetConnectionString("DefaultConnection") //Get from app settings.json
                 ?? "Server=localhost,1433;Database=StudentPortalDB;User Id=sa;Password=StudentsDB123;TrustServerCertificate=true;MultipleActiveResultSets=true";
+            
+            // Create master connection string for database creation
+            var builder = new SqlConnectionStringBuilder(_connectionString);
+            var databaseName = builder.InitialCatalog;
+            builder.InitialCatalog = "master";
+            _masterConnectionString = builder.ConnectionString;
         }
 
         private string HashPassword(string password)
@@ -27,6 +34,10 @@ namespace StudentApi.Services
         {
             try
             {
+                // First, create the database if it doesn't exist
+                await CreateDatabaseIfNotExistsAsync();
+                
+                // Then create tables and seed data
                 using var connection = new SqlConnection(_connectionString);
                 await connection.OpenAsync();
 
@@ -95,6 +106,20 @@ namespace StudentApi.Services
             }
         }
 
+        private async Task CreateDatabaseIfNotExistsAsync()
+        {
+            using var connection = new SqlConnection(_masterConnectionString);
+            await connection.OpenAsync();
+            
+            var command = new SqlCommand(@"
+                IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'StudentPortalDB')
+                BEGIN
+                    CREATE DATABASE StudentPortalDB
+                END", connection);
+            
+            await command.ExecuteNonQueryAsync();
+        }
+
         //Function to insert sample student data on first DB connection
         private async Task InsertSampleDataAsync(SqlConnection connection)
         {
@@ -109,7 +134,7 @@ namespace StudentApi.Services
                     INSERT INTO Students (FirstName, LastName, Email, Phone, DateOfBirth, Gender, Address, Course, Year, GPA) VALUES
                     ('John', 'Doe', 'john.doe@student.com', '+1-555-0101', '2000-05-15', 'Male', 'USA', 'Computer Science', 3, 3.75),
                     ('Jane', 'Smith', 'jane.smith@student.com', '+1-555-0102', '1999-08-22', 'Female', 'Munich', 'Electrical Engineering', 4, 3.92),
-                    ('Sushan', 'Uchil', 'mike.johnson@student.com', '+1-555-0103', '2001-02-10', 'Male', 'Mumbai India', 'Computer Science Engineering', 2, 4.00),
+                    ('Sushan', 'Uchil', 'uchilsushan36@gmail.com', '+1-555-0103', '2001-02-10', 'Male', 'Mumbai India', 'Computer Science Engineering', 2, 4.00),
                     ('Sarah', 'Wilson', 'sarah.wilson@student.siemens.com', '+1-555-0104', '2000-11-03', 'Female', 'Hamburg', 'Software Engineering', 3, 3.85),
                     ('David', 'Brown', 'david.brown@student.com', '+1-555-0105', '1998-12-18', 'Male', 'France', 'Data Science', 4, 3.67),
                     ('Emily', 'Davis', 'emily.davis@student.com', '+1-555-0106', '2001-07-25', 'Female', 'USA', 'Computer Science', 2, 3.43),

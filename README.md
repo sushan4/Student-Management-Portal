@@ -4,7 +4,7 @@ A comprehensive web application for managing student records built with React.js
 
 ## Features
 
-- **Authentication**: Login page with mock user authentication for now
+- **Authentication**: Login page with JWT User Authentication
 - **Dashboard**: Overview with statistics cards showing:
   - Total students count
   - New students (last 30 days)
@@ -83,7 +83,7 @@ The application uses SQL Server with automatic database initialization. The back
 ### Default Credentials
 
 For testing purposes, you can use these default credentials:
-- **Email**: admin@gmail.com
+- **Email**: admin
 - **Password**: admin02
 
 ## API Endpoints

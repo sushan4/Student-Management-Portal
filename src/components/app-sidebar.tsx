@@ -37,7 +37,7 @@ const data = {
   user: {
     name: "Sushan",
     email: "uchilsushan36@gmail.com",
-    avatar: "/avatars/shadcn.jpg",
+    avatar: "https://ui-avatars.com/api/?name=Sushan&background=E5E7EB&color=000000",
   },
   navMain: [
     {
