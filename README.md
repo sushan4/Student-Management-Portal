@@ -25,7 +25,7 @@ A comprehensive web application for managing student records built with React.js
 
 ### Prerequisites
 
-- **Node.js** (v18 or higher)
+- **Node.js** (v18 or higher, v22 preffered)
 - **npm** or **yarn**
 - **.NET 9 SDK**
 - **SQL Server** (LocalDB, Express, or full version)
@@ -74,8 +74,9 @@ The application uses SQL Server with automatic database initialization. The back
    The API will be available at: `http://localhost:5082`
    Swagger documentation: `http://localhost:5082/swagger`
 
-2. **Start the Frontend (in a new terminal)**
+2. **Start the Frontend from root of project(in a new terminal)**
    ```bash
+   cd Student-Management-Portal
    npm run dev
    ```
    The application will be available at: `http://localhost:5173`
