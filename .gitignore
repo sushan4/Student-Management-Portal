@@ -12,6 +12,19 @@ dist
 dist-ssr
 *.local
 
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.dll
+*.pdb
+*.exe
+*.deps.json
+*.runtimeconfig.json
+*.runtimeconfig.dev.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
