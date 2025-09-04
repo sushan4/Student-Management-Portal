@@ -1,6 +1,11 @@
 import { LoginForm } from "@/components/login-form";
 import {
   IconChalkboardTeacher,
+  IconSchool,
+  IconBook,
+  IconUsers,
+  IconChartBar,
+  IconTrophy,
 } from "@tabler/icons-react";
 import { motion } from "framer-motion";
 
@@ -79,15 +84,71 @@ export default function LoginPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <div className="text-center text-white">
+          <div className="text-center text-white max-w-md px-8">
             <motion.div
-              initial={{ opacity: 0, y: 20  }}
-              animate={{ opacity: 1, y: 0  }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
+              className="mb-8"
             >
-              
+              <h2 className="text-3xl font-bold mb-4 text-white">
+                Streamline Student Management
+              </h2>
+              {/* <p className="text-lg text-gray-300 leading-relaxed">
+                Efficiently manage student records, track progress, and enhance educational outcomes with our comprehensive portal.
+              </p> */}
             </motion.div>
-            
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              className="grid grid-cols-2 gap-6"
+            >
+              <motion.div 
+                className="flex flex-col items-center space-y-2"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="bg-white/10 backdrop-blur-sm rounded-full p-3">
+                  <IconSchool className="size-6 text-white" />
+                </div>
+                <span className="text-sm text-gray-300">Student Records</span>
+              </motion.div>
+
+              <motion.div 
+                className="flex flex-col items-center space-y-2"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="bg-white/10 backdrop-blur-sm rounded-full p-3">
+                  <IconBook className="size-6 text-white" />
+                </div>
+                <span className="text-sm text-gray-300">Course Management</span>
+              </motion.div>
+
+              <motion.div 
+                className="flex flex-col items-center space-y-2"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="bg-white/10 backdrop-blur-sm rounded-full p-3">
+                  <IconChartBar className="size-6 text-white" />
+                </div>
+                <span className="text-sm text-gray-300">Analytics</span>
+              </motion.div>
+
+              <motion.div 
+                className="flex flex-col items-center space-y-2"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="bg-white/10 backdrop-blur-sm rounded-full p-3">
+                  <IconTrophy className="size-6 text-white" />
+                </div>
+                <span className="text-sm text-gray-300">Achievements</span>
+              </motion.div>
+            </motion.div>
           </div>
         </motion.div>
       </motion.div>
